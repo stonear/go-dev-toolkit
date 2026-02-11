@@ -14,7 +14,7 @@ func TestNewZerolog_Defaults(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
+		WithOutput(&buf),
 	)
 
 	logger.Debug(context.Background(), "debug message")
@@ -35,8 +35,8 @@ func TestNewZerolog_WithLevelDebug(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
-		WithZerologLevel(LevelDebug),
+		WithOutput(&buf),
+		WithLevel(LevelDebug),
 	)
 
 	logger.Debug(context.Background(), "debug message")
@@ -50,8 +50,8 @@ func TestNewZerolog_WarnLevelFiltering(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
-		WithZerologLevel(LevelWarn),
+		WithOutput(&buf),
+		WithLevel(LevelWarn),
 	)
 
 	logger.Info(context.Background(), "info")
@@ -77,8 +77,8 @@ func TestZerolog_WithAttributes(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
-		WithZerologLevel(LevelDebug),
+		WithOutput(&buf),
+		WithLevel(LevelDebug),
 	)
 
 	logger.Info(
@@ -110,7 +110,7 @@ func TestZerolog_NoAttributes(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
+		WithOutput(&buf),
 	)
 
 	logger.Info(context.Background(), "hello")
@@ -124,8 +124,8 @@ func TestNewZerolog_ErrorLevelOnly(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewZerolog(
-		WithZerologOutput(&buf),
-		WithZerologLevel(LevelError),
+		WithOutput(&buf),
+		WithLevel(LevelError),
 	)
 
 	logger.Warn(context.Background(), "warn")

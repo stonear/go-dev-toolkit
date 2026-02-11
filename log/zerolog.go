@@ -2,50 +2,37 @@ package log
 
 import (
 	"context"
-	"io"
 	"os"
 
 	"github.com/rs/zerolog"
 )
 
 type Zerolog struct {
-	level  Level
-	writer io.Writer
-
+	config Config
 	logger zerolog.Logger
 }
 
-type ZerologOption func(*Zerolog)
-
-func NewZerolog(opts ...ZerologOption) Log {
-	z := &Zerolog{
-		writer: os.Stdout,
-		level:  LevelInfo,
+func NewZerolog(opts ...Option) Log {
+	cfg := &Config{
+		Level:  LevelInfo,
+		Output: os.Stdout,
 	}
 
 	for _, opt := range opts {
-		opt(z)
+		opt(cfg)
 	}
 
-	z.logger = zerolog.New(z.writer).
-		Level(toZerologLevel(z.level)).
+	z := &Zerolog{
+		config: *cfg,
+	}
+
+	z.logger = zerolog.New(z.config.Output).
+		Level(toZerologLevel(z.config.Level)).
 		With().
 		Timestamp().
 		Logger()
 
 	return z
-}
-
-func WithZerologLevel(level Level) ZerologOption {
-	return func(z *Zerolog) {
-		z.level = level
-	}
-}
-
-func WithZerologOutput(w io.Writer) ZerologOption {
-	return func(z *Zerolog) {
-		z.writer = w
-	}
 }
 
 func (z *Zerolog) Debug(ctx context.Context, msg string, attrs ...Attr) {

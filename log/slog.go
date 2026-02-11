@@ -2,50 +2,37 @@ package log
 
 import (
 	"context"
-	"io"
 	"log/slog"
 	"os"
 )
 
 type Slog struct {
-	level  Level
-	writer io.Writer
-
+	config Config
 	logger *slog.Logger
 }
 
-type SlogOption func(*Slog)
-
-func NewSlog(opts ...SlogOption) Log {
-	s := &Slog{
-		writer: os.Stdout,
-		level:  LevelInfo,
+func NewSlog(opts ...Option) Log {
+	cfg := &Config{
+		Level:  LevelInfo,
+		Output: os.Stdout,
 	}
 
 	for _, opt := range opts {
-		opt(s)
+		opt(cfg)
+	}
+
+	s := &Slog{
+		config: *cfg,
 	}
 
 	// TODO: Add otelslog once Go 1.26 is released, using slog.NewMultiHandler
 	s.logger = slog.New(
-		slog.NewJSONHandler(s.writer, &slog.HandlerOptions{
-			Level: toSlogLevel(s.level),
+		slog.NewJSONHandler(s.config.Output, &slog.HandlerOptions{
+			Level: toSlogLevel(s.config.Level),
 		}),
 	)
 
 	return s
-}
-
-func WithSlogLevel(level Level) SlogOption {
-	return func(s *Slog) {
-		s.level = level
-	}
-}
-
-func WithSlogOutput(w io.Writer) SlogOption {
-	return func(s *Slog) {
-		s.writer = w
-	}
 }
 
 func (s *Slog) Debug(ctx context.Context, msg string, attrs ...Attr) {

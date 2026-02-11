@@ -10,14 +10,14 @@ import "github.com/stonear/go-dev-toolkit/log"
 func main() {
 	// use log/slog
 	logger := log.NewSlog(
-		log.WithSlogLevel(log.LevelDebug),
-		log.WithSlogOutput(os.Stdout),
+		log.WithLevel(log.LevelDebug),
+		log.WithOutput(os.Stdout),
 	)
 
 	// or use zerolog
 	logger := log.NewZerolog(
-		log.WithZerologLevel(log.LevelDebug),
-		log.WithZerologOutput(os.Stdout),
+		log.WithLevel(log.LevelDebug),
+		log.WithOutput(os.Stdout),
 	)
 
 	ctx := context.Background()

@@ -27,7 +27,7 @@ func TestNewSlog_Defaults(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
+		WithOutput(&buf),
 	)
 
 	logger.Debug(context.Background(), "debug")
@@ -50,8 +50,8 @@ func TestNewSlog_WithLevelDebug(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
-		WithSlogLevel(LevelDebug),
+		WithOutput(&buf),
+		WithLevel(LevelDebug),
 	)
 
 	logger.Debug(context.Background(), "debug")
@@ -67,8 +67,8 @@ func TestNewSlog_WarnLevelFiltering(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
-		WithSlogLevel(LevelWarn),
+		WithOutput(&buf),
+		WithLevel(LevelWarn),
 	)
 
 	logger.Info(context.Background(), "info")
@@ -90,8 +90,8 @@ func TestSlog_WithAttributes(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
-		WithSlogLevel(LevelDebug),
+		WithOutput(&buf),
+		WithLevel(LevelDebug),
 	)
 
 	logger.Info(
@@ -120,7 +120,7 @@ func TestSlog_NoAttributes(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
+		WithOutput(&buf),
 	)
 
 	logger.Info(context.Background(), "hello")
@@ -136,8 +136,8 @@ func TestNewSlog_ErrorLevelOnly(t *testing.T) {
 	var buf bytes.Buffer
 
 	logger := NewSlog(
-		WithSlogOutput(&buf),
-		WithSlogLevel(LevelError),
+		WithOutput(&buf),
+		WithLevel(LevelError),
 	)
 
 	logger.Warn(context.Background(), "warn")

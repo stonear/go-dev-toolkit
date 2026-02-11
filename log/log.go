@@ -1,6 +1,9 @@
 package log
 
-import "context"
+import (
+	"context"
+	"io"
+)
 
 type Log interface {
 	Debug(ctx context.Context, msg string, attrs ...Attr)
@@ -29,3 +32,22 @@ const (
 	LevelWarn
 	LevelError
 )
+
+type Config struct {
+	Level  Level
+	Output io.Writer
+}
+
+type Option func(*Config)
+
+func WithLevel(level Level) Option {
+	return func(c *Config) {
+		c.Level = level
+	}
+}
+
+func WithOutput(output io.Writer) Option {
+	return func(c *Config) {
+		c.Output = output
+	}
+}
