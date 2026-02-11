@@ -9,6 +9,7 @@ import (
 type Cache interface {
 	Set(ctx context.Context, key string, value []byte, ttl time.Duration) error
 	Get(ctx context.Context, key string) ([]byte, error)
+	Del(ctx context.Context, key string) error
 }
 
 type Option func(*Config)
@@ -43,6 +44,10 @@ func Get[T any](ctx context.Context, c Cache, key string) (T, error) {
 	}
 
 	return result, nil
+}
+
+func Del(ctx context.Context, c Cache, key string) error {
+	return c.Del(ctx, key)
 }
 
 func Remember[T any](ctx context.Context, c Cache, key string, ttl time.Duration, fn func() (T, error)) (T, error) {

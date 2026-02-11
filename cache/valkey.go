@@ -40,3 +40,8 @@ func (v *ValkeyCache) Get(ctx context.Context, key string) ([]byte, error) {
 	cmd := v.client.B().Get().Key(key).Build()
 	return v.client.Do(ctx, cmd).AsBytes()
 }
+
+func (v *ValkeyCache) Del(ctx context.Context, key string) error {
+	cmd := v.client.B().Del().Key(key).Build()
+	return v.client.Do(ctx, cmd).Error()
+}

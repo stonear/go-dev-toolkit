@@ -42,3 +42,7 @@ func (m *MemcachedCache) Get(_ context.Context, key string) ([]byte, error) {
 
 	return item.Value, nil
 }
+
+func (m *MemcachedCache) Del(_ context.Context, key string) error {
+	return m.client.Delete(key)
+}

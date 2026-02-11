@@ -10,7 +10,7 @@ import (
 )
 
 type RedisCache struct {
-	client *redis.Client
+	client redis.Cmdable
 }
 
 func NewRedis(opts ...Option) (*RedisCache, error) {
@@ -42,4 +42,8 @@ func (r *RedisCache) Set(ctx context.Context, key string, value []byte, ttl time
 
 func (r *RedisCache) Get(ctx context.Context, key string) ([]byte, error) {
 	return r.client.Get(ctx, key).Bytes()
+}
+
+func (r *RedisCache) Del(ctx context.Context, key string) error {
+	return r.client.Del(ctx, key).Err()
 }
