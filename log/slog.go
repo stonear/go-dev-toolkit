@@ -4,6 +4,8 @@ import (
 	"context"
 	"log/slog"
 	"os"
+
+	"go.opentelemetry.io/contrib/bridges/otelslog"
 )
 
 type Slog struct {
@@ -25,12 +27,12 @@ func NewSlog(opts ...Option) Log {
 		config: *cfg,
 	}
 
-	// TODO: Add otelslog once Go 1.26 is released, using slog.NewMultiHandler
-	s.logger = slog.New(
+	s.logger = slog.New(slog.NewMultiHandler(
 		slog.NewJSONHandler(s.config.Output, &slog.HandlerOptions{
 			Level: toSlogLevel(s.config.Level),
 		}),
-	)
+		otelslog.NewHandler(""),
+	))
 
 	return s
 }
