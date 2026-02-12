@@ -134,7 +134,7 @@ func TestNew_Success(t *testing.T) {
 	if db == nil {
 		t.Fatal("expected db to be not nil")
 	}
-	db.Close()
+	_ = db.Close()
 }
 
 func TestNew_OpenFailure(t *testing.T) {
